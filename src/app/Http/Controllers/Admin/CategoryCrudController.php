@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStudio\EcommerceCrud\App\Http\Controllers\Admin;
+namespace SmartyStudio\EcommerceCrud\app\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 

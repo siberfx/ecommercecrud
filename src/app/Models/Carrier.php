@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStudio\EcommerceCrud\App\Models;
+namespace SmartyStudio\EcommerceCrud\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;

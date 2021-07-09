@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStudio\EcommerceCrud\App\Http\Requests;
+namespace SmartyStudio\EcommerceCrud\app\Http\Requests;
 
 use Backpack\CRUD\app\Http\Requests\CrudRequest;
 

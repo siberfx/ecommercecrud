@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStudio\EcommerceCrud\App\Http\Controllers\Admin;
+namespace SmartyStudio\EcommerceCrud\app\Http\Controllers\Admin;
 
 use SmartyStudio\EcommerceCrud\App\Models\Attribute;
 use Illuminate\Http\Request;

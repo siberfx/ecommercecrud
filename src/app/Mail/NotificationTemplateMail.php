@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStudio\EcommerceCrud\App\Mail;
+namespace SmartyStudio\EcommerceCrud\app\Mail;
 
 use App\Models\NotificationTemplate;
 use Illuminate\Bus\Queueable;

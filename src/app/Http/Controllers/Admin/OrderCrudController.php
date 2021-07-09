@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStudio\EcommerceCrud\App\Http\Controllers\Admin;
+namespace SmartyStudio\EcommerceCrud\app\Http\Controllers\Admin;
 
 use App\Http\Requests\OrderRequest as StoreRequest;
 use App\Http\Requests\OrderRequest as UpdateRequest;
