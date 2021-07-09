@@ -8,20 +8,20 @@ Route::group([
 	'prefix'     => config('backpack.base.route_prefix', 'admin'),
 	'middleware' => ['web', backpack_middleware()],
 ], function () {
-	CRUD::resource('categories', 'CategoryCrudController');
-	CRUD::resource('currencies', 'CurrencyCrudController');
-	CRUD::resource('carriers', 'CarrierCrudController');
-	CRUD::resource('attributes', 'AttributeCrudController');
-	CRUD::resource('attributes-sets', 'AttributeSetCrudController');
-	CRUD::resource('products', 'ProductCrudController');
-	CRUD::resource('taxes', 'TaxCrudController');
-	CRUD::resource('orders', 'OrderCrudController');
-	CRUD::resource('order-statuses', 'OrderStatusCrudController');
-	CRUD::resource('clients', 'ClientCrudController');
-	CRUD::resource('users', 'UserCrudController');
-	CRUD::resource('cart-rules', 'CartRuleCrudController');
-	CRUD::resource('specific-prices', 'SpecificPriceCrudController');
-	CRUD::resource('notification-templates', 'NotificationTemplateCrudController');
+	Route::crud('categories', 'CategoryCrudController');
+	Route::crud('currencies', 'CurrencyCrudController');
+	Route::crud('carriers', 'CarrierCrudController');
+	Route::crud('attributes', 'AttributeCrudController');
+	Route::crud('attributes-sets', 'AttributeSetCrudController');
+	Route::crud('products', 'ProductCrudController');
+	Route::crud('taxes', 'TaxCrudController');
+	Route::crud('orders', 'OrderCrudController');
+	Route::crud('order-statuses', 'OrderStatusCrudController');
+	Route::crud('clients', 'ClientCrudController');
+	Route::crud('users', 'UserCrudController');
+	Route::crud('cart-rules', 'CartRuleCrudController');
+	Route::crud('specific-prices', 'SpecificPriceCrudController');
+	Route::crud('notification-templates', 'NotificationTemplateCrudController');
 
 	// Clone Products
 	Route::post('products/clone', ['as' => 'clone.product', 'uses' => 'ProductCrudController@cloneProduct']);
