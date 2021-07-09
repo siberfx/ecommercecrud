@@ -13,25 +13,14 @@ class CreateCartRulesCombinationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cart_rules_combinations', 
-            function(Blueprint $table)
-        {
+        Schema::create('cart_rules_combinations', function(Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->integer('cart_rule_id_1')->unsigned();
-            $table->integer('cart_rule_id_2')->unsigned();
+            $table->bigInteger('cart_rule_id_1')->unsigned();
+			$table->bigInteger('cart_rule_id_2')->unsigned();
+			$table->nullableTimestamps();
           
-            $table->foreign('cart_rule_id_1')
-                ->references('id')->on('cart_rules')  
-                ->onDelete('no action')
-                ->onUpdate('no action');
-
-            $table->foreign('cart_rule_id_2')
-                ->references('id')->on('cart_rules')  
-                ->onDelete('no action')
-                ->onUpdate('no action');
-
-            $table->nullableTimestamps();
-    
+            $table->unsignedBigInteger('cart_rule_id_1')->references('id')->on('cart_rules')->onDelete('no action')->onUpdate('no action');
+            $table->unsignedBigInteger('cart_rule_id_2')->references('id')->on('cart_rules')->onDelete('no action')->onUpdate('no action');
         });
     }
 

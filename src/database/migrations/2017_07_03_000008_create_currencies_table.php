@@ -15,7 +15,7 @@ class CreateCurrenciesTable extends Migration
     {
         Schema::create('currencies', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+			$table->id();
             $table->string('name', 45)->nullable()->default(null);
             $table->string('iso', 45)->nullable()->default(null);
             $table->string('value', 45)->nullable()->default(null);

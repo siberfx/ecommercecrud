@@ -15,7 +15,7 @@ class CreateNotificationTemplatesTable extends Migration
     {
         Schema::create('notification_templates', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+			$table->id();
             $table->string('name', 255)->nullable()->default(null);
             $table->string('slug', 255)->unique()->nullable()->default(null);
             $table->string('model', 255)->nullable()->default(null);

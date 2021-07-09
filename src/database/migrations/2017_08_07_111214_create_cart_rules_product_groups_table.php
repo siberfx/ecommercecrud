@@ -13,23 +13,14 @@ class CreateCartRulesProductGroupsTable extends Migration
      */
     public function up()
     {
-         Schema::create('cart_rules_product_groups', 
-            function(Blueprint $table)
-        {
+        Schema::create('cart_rules_product_groups', function(Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->integer('cart_rule_id')->unsigned();
-            $table->integer('product_group_id')->unsigned();
-          
-            $table->foreign('cart_rule_id')
-                ->references('id')->on('cart_rules')  
-                ->onDelete('no action')
-                ->onUpdate('no action');
+            $table->bigInteger('cart_rule_id')->unsigned();
+            $table->bigInteger('product_group_id')->unsigned();
+			$table->nullableTimestamps();
 
-            $table->foreign('product_group_id')
-                ->references('id')->on('product_groups')
-                ->onDelete('no action')
-                ->onUpdate('no action');
-            $table->nullableTimestamps();
+            $table->unsignedBigInteger('cart_rule_id')->references('id')->on('cart_rules')->onDelete('no action')->onUpdate('no action');
+            $table->unsignedBigInteger('product_group_id')->references('id')->on('product_groups')->onDelete('no action')->onUpdate('no action');
         });
     }
 

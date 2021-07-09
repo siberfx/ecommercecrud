@@ -14,9 +14,8 @@ class CreateCartRulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cart_rules', function(Blueprint $table) 
-        {
-            $table->increments('id');
+        Schema::create('cart_rules', function(Blueprint $table) {
+			$table->id();
             $table->string('name', 255);
             $table->string('code', 100);
             $table->tinyInteger('priority');
@@ -32,38 +31,18 @@ class CreateCartRulesTable extends Migration
             $table->string('promo_text', 1000)->nullable();
             $table->integer('multiply_gift')->nullable()->default(1);
             $table->integer('min_nr_products')->nullable()->default(0);
-            $table->enum('discount_type', array('Percent - order', 
-                        'Percent - selected products', 'Percent - cheapest product', 
-                        'Percent - most expensive product', 'Amount - order'));
+            $table->enum('discount_type', ['Percent - order', 'Percent - selected products', 'Percent - cheapest product', 'Percent - most expensive product', 'Amount - order']);
             $table->decimal('reduction_amount', 13, 2)->nullable()->default(0);
-            $table->integer('reduction_currency_id')->unsigned()->nullable();
-            $table->integer('minimum_amount_currency_id')->unsigned()->nullable();
-            $table->integer('gift_product_id')->unsigned()->nullable();
-            $table->integer('customer_id')->unsigned()->nullable();
+            $table->bigInteger('reduction_currency_id')->unsigned()->nullable();
+            $table->bigInteger('minimum_amount_currency_id')->unsigned()->nullable();
+            $table->bigInteger('gift_product_id')->unsigned()->nullable();
+			$table->bigInteger('customer_id')->unsigned()->nullable();
+			$table->nullableTimestamps();
 
-            // Foreign keys
-            $table->foreign('customer_id')
-                ->references('id')->on('users')
-                ->onDelete('no action')
-                ->onUpdate('no action');
-
-            $table->foreign('gift_product_id')
-                ->references('id')->on('products')
-                ->onDelete('no action')
-                ->onUpdate('no action');
-
-            $table->foreign('reduction_currency_id')
-                ->references('id')->on('currencies')
-                ->onDelete('no action')
-                ->onUpdate('no action');
-
-            $table->foreign('minimum_amount_currency_id')
-                ->references('id')->on('currencies')
-                ->onDelete('no action')
-                ->onUpdate('no action');
-
-
-            $table->nullableTimestamps();
+            $table->unsignedBigInteger('customer_id')->references('id')->on('users')->onDelete('no action')->onUpdate('no action');
+            $table->unsignedBigInteger('gift_product_id')->references('id')->on('products')->onDelete('no action')->onUpdate('no action');
+            $table->unsignedBigInteger('reduction_currency_id')->references('id')->on('currencies')->onDelete('no action')->onUpdate('no action');
+            $table->unsignedBigInteger('minimum_amount_currency_id')->references('id')->on('currencies')->onDelete('no action')->onUpdate('no action');
         });
     }
 

@@ -15,21 +15,13 @@ class CreateOrderStatusHistoryTable extends Migration
     {
         Schema::create('order_status_history', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
-            $table->integer('order_id')->unsigned();
-            $table->integer('status_id')->unsigned();
+			$table->id();
+            $table->bigInteger('order_id')->unsigned();
+            $table->bigInteger('status_id')->unsigned();
             $table->nullableTimestamps();
 
-
-            $table->foreign('status_id')
-                ->references('id')->on('order_statuses')
-                ->onDelete('no action')
-                ->onUpdate('no action');
-
-            $table->foreign('order_id')
-                ->references('id')->on('orders')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+            $table->unsignedBigInteger('status_id')->references('id')->on('order_statuses')->onDelete('no action')->onUpdate('no action');
+            $table->unsignedBigInteger('order_id')->references('id')->on('orders')->onDelete('no action')->onUpdate('no action');
         });
     }
 

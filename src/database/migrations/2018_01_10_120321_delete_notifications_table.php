@@ -25,7 +25,7 @@ class DeleteNotificationsTable extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+			$table->id();
         });
     }
 }

@@ -15,7 +15,7 @@ class CreateProductGroupsTable extends Migration
     {
         Schema::create('product_groups', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+			$table->id();
             $table->nullableTimestamps();
         });
     }

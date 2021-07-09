@@ -15,20 +15,12 @@ class CreateAttributeProductValueTable extends Migration
     {
         Schema::create('attribute_product_value', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->integer('product_id')->unsigned();
-            $table->integer('attribute_id')->unsigned();
+            $table->bigInteger('product_id')->unsigned();
+            $table->bigInteger('attribute_id')->unsigned();
             $table->string('value', 255)->nullable()->default(null);
 
-
-            $table->foreign('attribute_id')
-                ->references('id')->on('attributes')
-                ->onDelete('no action')
-                ->onUpdate('no action');
-
-            $table->foreign('product_id')
-                ->references('id')->on('products')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+            $table->unsignedBigInteger('attribute_id')->references('id')->on('attributes')->onDelete('no action')->onUpdate('no action');
+            $table->unsignedBigInteger('product_id')->references('id')->on('products')->onDelete('no action')->onUpdate('no action');
         });
     }
 

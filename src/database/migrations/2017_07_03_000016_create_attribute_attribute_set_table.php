@@ -15,19 +15,11 @@ class CreateAttributeAttributeSetTable extends Migration
     {
         Schema::create('attribute_attribute_set', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->integer('attribute_id')->unsigned();
-            $table->integer('attribute_set_id')->unsigned();
+            $table->bigInteger('attribute_id')->unsigned();
+            $table->bigInteger('attribute_set_id')->unsigned();
 
-
-            $table->foreign('attribute_id')
-                ->references('id')->on('attributes')
-                ->onDelete('no action')
-                ->onUpdate('no action');
-
-            $table->foreign('attribute_set_id')
-                ->references('id')->on('attribute_sets')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+            $table->unsignedBigInteger('attribute_id')->references('id')->on('attributes')->onDelete('no action')->onUpdate('no action');
+            $table->unsignedBigInteger('attribute_set_id')->references('id')->on('attribute_sets')->onDelete('no action')->onUpdate('no action');
         });
     }
 

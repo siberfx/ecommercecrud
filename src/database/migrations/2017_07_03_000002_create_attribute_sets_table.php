@@ -15,7 +15,7 @@ class CreateAttributeSetsTable extends Migration
     {
         Schema::create('attribute_sets', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+			$table->id();
             $table->string('name', 45)->nullable()->default(null);
         });
     }

@@ -13,20 +13,16 @@ class CreateSpecificPricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('specific_prices', function(Blueprint $table){
+        Schema::create('specific_prices', function(Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+			$table->id();
             $table->decimal('reduction', 13, 2)->nullable()->default(0);
             $table->enum('discount_type', array('Amount', 'Percent'));
             $table->dateTime('start_date');
             $table->dateTime('expiration_date');
-            $table->integer('product_id')->unsigned()->nullable();
+            $table->bigInteger('product_id')->unsigned()->nullable();
 
-            // Foreign keys
-            $table->foreign('product_id')
-                ->references('id')->on('products')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+            $table->unsignedBigInteger('product_id')->references('id')->on('products')->onDelete('no action')->onUpdate('no action');
         });
     }
 

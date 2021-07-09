@@ -15,7 +15,7 @@ class CreateCarriersTable extends Migration
     {
         Schema::create('carriers', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+			$table->id();
             $table->string('name', 45)->nullable()->default(null);
             $table->decimal('price', 13, 2);
             $table->string('delivery_text', 255)->nullable()->default(null);

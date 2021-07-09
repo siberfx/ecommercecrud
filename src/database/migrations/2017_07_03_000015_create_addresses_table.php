@@ -27,8 +27,8 @@ class CreateAddressesTable extends Migration
             $table->string('phone', 50)->nullable()->default(null);
             $table->string('mobile_phone', 50)->nullable()->default(null);
             $table->mediumText('comment')->nullable()->default(null);
-            $table->nullableTimestamps();
-
+			$table->nullableTimestamps();
+			
 			$table->unsignedBigInteger('user_id')->references('id')->on('users')->onDelete('no action')->onUpdate('no action');
             $table->unsignedBigInteger('country_id')->references('id')->on('countries')->onDelete('no action')->onUpdate('no action');
         });

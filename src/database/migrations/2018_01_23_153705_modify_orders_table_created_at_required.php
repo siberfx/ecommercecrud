@@ -13,8 +13,7 @@ class ModifyOrdersTableCreatedAtRequired extends Migration
      */
     public function up()
     {
-        Schema::table('orders', function($table)
-        {
+        Schema::table('orders', function($table) {
             DB::statement('ALTER TABLE `orders` MODIFY `created_at` TIMESTAMP NOT NULL;');
         });
     }
