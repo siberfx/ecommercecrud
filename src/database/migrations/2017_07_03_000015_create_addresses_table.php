@@ -15,9 +15,9 @@ class CreateAddressesTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->integer('country_id')->unsigned();
+			$table->id();
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('country_id')->unsigned();
             $table->string('name', 100)->nullable()->default(null);
             $table->string('address1', 255)->nullable()->default(null);
             $table->string('address2', 255)->nullable()->default(null);
@@ -29,16 +29,8 @@ class CreateAddressesTable extends Migration
             $table->mediumText('comment')->nullable()->default(null);
             $table->nullableTimestamps();
 
-
-            $table->foreign('country_id')
-                ->references('id')->on('countries')
-                ->onDelete('no action')
-                ->onUpdate('no action');
-
-            $table->foreign('user_id')
-                ->references('id')->on('users')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+			$table->unsignedBigInteger('user_id')->references('id')->on('users')->onDelete('no action')->onUpdate('no action');
+            $table->unsignedBigInteger('country_id')->references('id')->on('countries')->onDelete('no action')->onUpdate('no action');
         });
     }
 
