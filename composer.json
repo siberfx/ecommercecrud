@@ -1,0 +1,52 @@
+{
+    "name": "smartystudio/ecommercecrud",
+    "description": "An admin interface for Laravel Backpack to easily create ecommerce applications.",
+    "keywords": [
+        "laravel backpack",
+        "testimonial", "testimonials",
+		"manage testimonials",
+		"backpack crud",
+		"ecommerce"
+    ],
+    "homepage": "https://github.com/smartystudio/ecommercecrud",
+    "license": "MIT",
+    "authors": [{
+        "name": "Martin Nestorov",
+        "email": "m.nestorov@smartystudio.net",
+        "role": "Web Developer"
+    }],
+    "require": {
+       	"php": "^7.3|^8.0",
+        "backpack/crud": "4.1.*",
+        "cviebrock/eloquent-sluggable": "^8.0||^7.0||^6.0||4.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0||^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SmartyStudio\\EcommerceCrud\\": "src"
+		},
+		"files": [
+			"app/Http/helpers.php"
+		]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SmartyStudio\\EcommerceCrud\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --testdox"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "SmartyStudio\\EcommerceCrud\\EcommerceCRUDServiceProvider"
+            ]
+        }
+    }
+}
