@@ -3,7 +3,7 @@
 namespace SmartyStudio\EcommerceCrud\app\Models;
 
 use App\Mail\NotificationTemplateMail;
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
