@@ -28,7 +28,7 @@
             "SmartyStudio\\EcommerceCrud\\": "src"
 		},
 		"files": [
-			"src/app/helpers.php"
+			"src/app/Helpers/helpers.php"
 		]
     },
     "autoload-dev": {
