@@ -2,58 +2,63 @@
 
 namespace SmartyStudio\EcommerceCrud\app\Http\Controllers\Admin;
 
+use SmartyStudio\EcommerceCrud\app\Http\Requests\OrderStatusRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 
-// VALIDATION: change the requests to match your own file names if you need form validation
-use App\Http\Requests\OrderStatusRequest as StoreRequest;
-use App\Http\Requests\OrderStatusRequest as UpdateRequest;
-
+/**
+ * Class OrderStatusCrudController
+ * @package App\Http\Controllers\Admin
+ * @property-read CrudPanel $crud
+ */
 class OrderStatusCrudController extends CrudController
 {
+	use ListOperation;
+	use CreateOperation;
+	use UpdateOperation;
+	use DeleteOperation;
+	use ShowOperation;
 
-    public function setUp()
+    public function setup()
     {
-
         /*
 		|--------------------------------------------------------------------------
 		| BASIC CRUD INFORMATION
 		|--------------------------------------------------------------------------
 		*/
-        $this->crud->setModel('SmartyStudio\EcommerceCrud\App\Models\OrderStatus');
+        $this->crud->setModel('SmartyStudio\EcommerceCrud\app\Models\OrderStatus');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/order-statuses');
         $this->crud->setEntityNameStrings('order status', 'order statuses');
 
-        /*
+		/*
         |--------------------------------------------------------------------------
         | COLUMNS
         |--------------------------------------------------------------------------
         */
-        $this->crud->addColumns([
-            [
-                'name'  => 'name',
-                'label' => trans('order.status_name'),
-            ],
-            [
-                'name'  => 'notification',
-                'label' => trans('order.notification'),
-                'type'  => 'boolean',
-                'options' => [0 => 'Disabled', 1 => 'Enabled']
-            ]
-        ]);
+		$this->crud->addColumns(
+			$this->getColumns()
+		);
 
-        /*
-        |--------------------------------------------------------------------------
-        | PERMISSIONS
-        |-------------------------------------------------------------------------
-        */
-        $this->setPermissions();
-
-        /*
+		/*
         |--------------------------------------------------------------------------
         | FIELDS
         |--------------------------------------------------------------------------
         */
-        $this->setFields();
+		$this->crud->addFields(
+			$this->getFields()
+		);
+
+		/*
+        |--------------------------------------------------------------------------
+        | PERMISSIONS
+        |-------------------------------------------------------------------------
+        */
+		$this->setPermissions();
 
         /*
         |--------------------------------------------------------------------------
@@ -62,7 +67,62 @@ class OrderStatusCrudController extends CrudController
         */
         $this->crud->enableAjaxTable();
 
-    }
+	}
+
+	protected function setupListOperation()
+	{
+	}
+
+	protected function setupCreateOperation()
+	{
+		$this->crud->setValidation(OrderStatusRequest::class);
+	}
+
+	protected function setupUpdateOperation()
+	{
+		$this->crud->setValidation(OrderStatusRequest::class);
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getColumns()
+	{
+		return [
+			[
+				'name'  => 'name',
+				'label' => trans('order.status_name'),
+			],
+			[
+				'name'  => 'notification',
+				'label' => trans('order.notification'),
+				'type'  => 'boolean',
+				'options' => [0 => 'Disabled', 1 => 'Enabled']
+			]
+		];
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getFields()
+	{
+		return [
+			[
+				'name'  => 'name',
+				'label' => trans('order.status_name'),
+				'type'  => 'text',
+			],
+			[
+				'name'  => 'notification',
+				'type'  => 'select_from_array',
+				'options' => [
+					1 => 'Enabled',
+					0 => 'Disabled'
+				]
+			]
+		];
+	}
 
     public function setPermissions()
     {
@@ -92,37 +152,4 @@ class OrderStatusCrudController extends CrudController
             $this->crud->allowAccess('delete');
         }
     }
-
-    public function setFields()
-    {
-        $this->crud->addFields([
-            [
-                'name'  => 'name',
-                'label' => trans('order.status_name'),
-                'type'  => 'text',
-            ],
-            [
-                'name'  => 'notification',
-                'type'  => 'select_from_array',
-                'options' => [
-                    1 => 'Enabled',
-                    0 => 'Disabled'
-                ]
-            ]
-        ]);
-    }
-
-	public function store(StoreRequest $request)
-	{
-        $redirect_location = parent::storeCrud();
-
-        return $redirect_location;
-	}
-
-	public function update(UpdateRequest $request)
-	{
-        $redirect_location = parent::updateCrud();
-
-        return $redirect_location;
-	}
 }

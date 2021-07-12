@@ -3,18 +3,16 @@
 namespace SmartyStudio\EcommerceCrud\app\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-
-use App\Http\Requests\SpecificPriceRequest as StoreRequest;
-use App\Http\Requests\SpecificPriceRequest as UpdateRequest;
-use App\Models\SpecificPrice;
-use App\Models\Product;
+use SmartyStudio\EcommerceCrud\app\Http\Requests\SpecificPriceRequest as StoreRequest;
+use SmartyStudio\EcommerceCrud\app\Http\Requests\SpecificPriceRequest as UpdateRequest;
+use SmartyStudio\EcommerceCrud\app\Models\SpecificPrice;
+use SmartyStudio\EcommerceCrud\app\Models\Product;
 
 
 class SpecificPriceCrudController extends CrudController
 {
     public function setup()
     {
-
         /*
         |--------------------------------------------------------------------------
         | BASIC CRUD INFORMATION

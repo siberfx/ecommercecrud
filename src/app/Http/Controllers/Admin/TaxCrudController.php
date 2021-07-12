@@ -2,42 +2,50 @@
 
 namespace SmartyStudio\EcommerceCrud\app\Http\Controllers\Admin;
 
+use SmartyStudio\EcommerceCrud\app\Http\Requests\TaxRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-// VALIDATION: change the requests to match your own file names if you need form validation
-use App\Http\Requests\TaxRequest as StoreRequest;
-use App\Http\Requests\TaxRequest as UpdateRequest;
-
+/**
+ * Class TaxCrudController
+ * @package App\Http\Controllers\Admin
+ * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
+ */
 class TaxCrudController extends CrudController
 {
+	use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+	use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+	use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+	use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+	use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function setUp()
     {
-
         /*
 		|--------------------------------------------------------------------------
 		| BASIC CRUD INFORMATION
 		|--------------------------------------------------------------------------
 		*/
-        $this->crud->setModel('SmartyStudio\EcommerceCrud\App\Models\Tax');
+        $this->crud->setModel('SmartyStudio\EcommerceCrud\app\Models\Tax');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/taxes');
         $this->crud->setEntityNameStrings('tax', 'taxes');
 
-        /*
+		/*
         |--------------------------------------------------------------------------
         | COLUMNS
         |--------------------------------------------------------------------------
         */
-        $this->crud->addColumns([
-            [
-                'name'  => 'name',
-                'label' => trans('tax.name'),
-            ],
-            [
-                'name'  => 'value',
-                'label' => trans('tax.value'),
-            ]
-        ]);
+		$this->crud->addColumns(
+			$this->getColumns()
+		);
+
+		/*
+        |--------------------------------------------------------------------------
+        | FIELDS
+        |--------------------------------------------------------------------------
+        */
+		$this->crud->addFields(
+			$this->getFields()
+		);
 
         /*
         |--------------------------------------------------------------------------
@@ -48,19 +56,62 @@ class TaxCrudController extends CrudController
 
         /*
         |--------------------------------------------------------------------------
-        | FIELDS
-        |--------------------------------------------------------------------------
-        */
-        $this->setFields();
-
-        /*
-        |--------------------------------------------------------------------------
         | AJAX TABLE VIEW
         |--------------------------------------------------------------------------
         */
         $this->crud->enableAjaxTable();
-
     }
+
+	protected function setupListOperation()
+	{
+	}
+
+	protected function setupCreateOperation()
+	{
+		$this->crud->setValidation(TaxRequest::class);
+	}
+
+	protected function setupUpdateOperation()
+	{
+		$this->crud->setValidation(TaxRequest::class);
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getColumns()
+	{
+		return [
+			[
+				'name'  => 'name',
+				'label' => __('tax.name'),
+			],
+			[
+				'name'  => 'value',
+				'label' => __('tax.value'),
+			]
+		];
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getFields()
+	{
+		return [
+			[
+				'name'  => 'name',
+				'label' => __('tax.name'),
+				'type'  => 'text',
+			],
+			[
+				'name'  => 'value',
+				'label' => __('tax.value'),
+				'hint'  => __('tax.hint_value'),
+				'type'  => 'text',
+			]
+		];
+	}
 
     public function setPermissions()
     {
@@ -90,35 +141,4 @@ class TaxCrudController extends CrudController
             $this->crud->allowAccess('delete');
         }
     }
-
-    public function setFields()
-    {
-        $this->crud->addFields([
-            [
-                'name'  => 'name',
-                'label' => trans('tax.name'),
-                'type'  => 'text',
-            ],
-            [
-                'name'  => 'value',
-                'label' => trans('tax.value'),
-                'hint'  => trans('tax.hint_value'),
-                'type'  => 'text',
-            ]
-        ]);
-    }
-
-	public function store(StoreRequest $request)
-	{
-        $redirect_location = parent::storeCrud();
-
-        return $redirect_location;
-	}
-
-	public function update(UpdateRequest $request)
-	{
-        $redirect_location = parent::updateCrud();
-
-        return $redirect_location;
-	}
 }

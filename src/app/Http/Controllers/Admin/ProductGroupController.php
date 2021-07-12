@@ -3,8 +3,8 @@
 namespace SmartyStudio\EcommerceCrud\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\ProductGroup;
+use SmartyStudio\EcommerceCrud\app\Models\Product;
+use SmartyStudio\EcommerceCrud\app\Models\ProductGroup;
 use Illuminate\Http\Request;
 
 class ProductGroupController extends Controller

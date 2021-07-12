@@ -2,150 +2,172 @@
 
 namespace SmartyStudio\EcommerceCrud\app\Http\Controllers\Admin;
 
-use App\Http\Requests\OrderRequest as StoreRequest;
-use App\Http\Requests\OrderRequest as UpdateRequest;
-use App\Models\OrderStatus;
-use App\Models\OrderStatusHistory;
+use SmartyStudio\EcommerceCrud\app\Http\Requests\OrderRequest;
+use SmartyStudio\EcommerceCrud\app\Models\Order;
+use SmartyStudio\EcommerceCrud\app\Models\OrderStatus;
+use SmartyStudio\EcommerceCrud\app\Models\OrderStatusHistory;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Http\Request;
 
+/**
+ * Class OrderCrudController
+ * @package App\Http\Controllers\Admin
+ * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
+ */
 class OrderCrudController extends CrudController
 {
+	use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+	use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+	use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    public function setUp()
-    {
-
-        /*
+	public function setup()
+	{
+		/*
         |--------------------------------------------------------------------------
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-        $this->crud->setModel('SmartyStudio\EcommerceCrud\App\Models\Order');
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/orders');
-        $this->crud->setEntityNameStrings('order', 'orders');
+		$this->crud->setModel('SmartyStudio\EcommerceCrud\app\Models\Order');
+		$this->crud->setRoute(config('backpack.base.route_prefix') . '/orders');
+		$this->crud->setEntityNameStrings('order', 'orders');
 
-        /*
+		/*
         |--------------------------------------------------------------------------
         | COLUMNS
         |--------------------------------------------------------------------------
         */
-        $this->crud->addColumns([
-            [
-                'name'  => 'id',
-                'label' => '#',
-            ],
-            [
-                'label'     => trans('client.client'),
-                'type'      => 'select',
-                'name'      => 'user_id',
-                'entity'    => 'user',
-                'attribute' => 'name',
-                'model'     => 'App\User',
-            ],
-            [
-                'label'     => trans('order.status'),
-                'type'      => 'select',
-                'name'      => 'status_id',
-                'entity'    => 'status',
-                'attribute' => 'name',
-                'model'     => 'App\Models\OrderStatus',
-            ],
-            [
-                'name'  => 'total',
-                'label' => trans('common.total'),
-            ],
-            [
-                'label'     => trans('currency.currency'),
-                'type'      => 'select',
-                'name'      => 'currency_id',
-                'entity'    => 'currency',
-                'attribute' => 'name',
-                'model'     => 'App\Models\Currency',
-            ],
-            [
-                'name'  => 'created_at',
-                'label' => trans('order.created_at'),
-            ]
-        ]);
+		$this->crud->addColumns(
+			$this->getColumns()
+		);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | PERMISSIONS
-        |-------------------------------------------------------------------------
-        */
-        $this->setPermissions();
-
-        /*
+		/*
         |--------------------------------------------------------------------------
         | FIELDS
         |--------------------------------------------------------------------------
         */
-        // $this->setFields();
+		$this->crud->addFields(
+			$this->getFields()
+		);
 
-        /*
+		/*
+        |--------------------------------------------------------------------------
+        | PERMISSIONS
+        |-------------------------------------------------------------------------
+        */
+		$this->setPermissions();
+
+		/*
         |--------------------------------------------------------------------------
         | AJAX TABLE VIEW
         |--------------------------------------------------------------------------
         */
-        // $this->crud->enableAjaxTable();
+		// $this->crud->enableAjaxTable();
+	}
+
+	protected function setupListOperation()
+	{
+		$this->crud->addButtonFromModelFunction('line', 'generate_invoice', 'generateInvoice', 'beginning');
+	}
+
+	protected function setupCreateOperation()
+	{
+		$this->crud->setValidation(OrderRequest::class);
+	}
+
+	protected function setupUpdateOperation()
+	{
+		$this->crud->setValidation(OrderRequest::class);
+	}
 
 
-    }
+	public function show($id)
+	{
 
-    public function setPermissions()
-    {
-        // Get authenticated user
-        $user = auth()->user();
+		$order = $this->crud->getEntry($id);
+		$orderStatuses = OrderStatus::get();
+		$crud = $this->crud;
 
-        // Deny all accesses
-        $this->crud->denyAccess(['create', 'delete', 'update']);
+		return view('renders.order-view', compact('crud', 'order', 'orderStatuses'));
+	}
 
-        // Allow access to show and replace preview button with view
-        $this->crud->allowAccess('show');
-        $this->crud->removeButton('preview');
-        $this->crud->addButtonFromView('line', 'view', 'view', 'end');
-    }
+	public function updateStatus(Request $request, OrderStatusHistory $orderStatusHistory)
+	{
+		// Create history entry
+		$orderStatusHistory->create($request->except('_token'));
 
-    // public function setFields()
-    // {
-    // }
+		$this->crud->update($request->input('order_id'), ['status_id' => $request->input('status_id')]);
 
-    public function show($id)
-    {
-        $this->crud->hasAccessOrFail('show');
+		\Alert::success(__('order.status_updated'))->flash();
 
-        $order = $this->crud->getEntry($id);
-        $orderStatuses = OrderStatus::get();
-        $crud = $this->crud;
+		return redirect()->back();
+	}
 
-        return view('admin.order.view', compact('crud', 'order', 'orderStatuses'));
-    }
 
-    public function updateStatus(Request $request, OrderStatusHistory $orderStatusHistory)
-    {
-        // Create history entry
-        $orderStatusHistory->create($request->except('_token'));
+	/**
+	 * @return array
+	 */
+	private function getColumns()
+	{
+		return [
+			[
+				'name'  => 'id',
+				'label' => '#',
+			],
+			[
+				'label'     => trans('client.client'),
+				'type'      => 'select',
+				'name'      => 'user_id',
+				'entity'    => 'user',
+				'attribute' => 'name',
+				'model'     => 'App\User',
+			],
+			[
+				'label'     => trans('order.status'),
+				'type'      => 'select',
+				'name'      => 'status_id',
+				'entity'    => 'status',
+				'attribute' => 'name',
+				'model'     => 'App\Models\OrderStatus',
+			],
+			[
+				'name'  => 'total',
+				'label' => trans('common.total'),
+			],
+			[
+				'label'     => trans('currency.currency'),
+				'type'      => 'select',
+				'name'      => 'currency_id',
+				'entity'    => 'currency',
+				'attribute' => 'name',
+				'model'     => 'App\Models\Currency',
+			],
+			[
+				'name'  => 'created_at',
+				'label' => trans('order.created_at'),
+			]
+		];
+	}
 
-        $this->crud->update($request->input('order_id'), ['status_id' => $request->input('status_id')]);
+	/**
+	 * @return array
+	 */
+	private function getFields()
+	{
+		return [];
+	}
 
-        \Alert::success(trans('order.status_updated'))->flash();
+	public function setPermissions()
+	{
+		// Get authenticated user
+		$user = auth()->user();
 
-        return redirect()->back();
-    }
+		// Deny all accesses
+		$this->crud->denyAccess(['create', 'delete', 'update']);
 
-    public function store(StoreRequest $request)
-    {
-        $redirect_location = parent::storeCrud();
-
-        return $redirect_location;
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        $redirect_location = parent::updateCrud();
-
-        return $redirect_location;
-    }
-
+		// Allow access to show and replace preview button with view
+		$this->crud->allowAccess('show');
+		$this->crud->removeButton('preview');
+		$this->crud->addButtonFromView('line', 'view', 'view', 'end');
+	}
 }
