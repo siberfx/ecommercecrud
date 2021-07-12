@@ -2,9 +2,9 @@
 
 namespace SmartyStudio\EcommerceCrud\app\Http\Requests;
 
-use App\Http\Requests\Request;
+use Backpack\CRUD\app\Http\Requests\CrudRequest;
 
-class NotificationTemplateRequest extends \Backpack\CRUD\app\Http\Requests\CrudRequest
+class NotificationTemplateRequest extends CrudRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,8 +13,8 @@ class NotificationTemplateRequest extends \Backpack\CRUD\app\Http\Requests\CrudR
      */
     public function authorize()
     {
-        // only allow updates if the user is logged in
-        return \Auth::check();
+		// only allow updates if the user is logged in
+		return backpack_auth()->check();
     }
 
     /**
@@ -22,12 +22,12 @@ class NotificationTemplateRequest extends \Backpack\CRUD\app\Http\Requests\CrudR
      *
      * @return array
      */
-    public function rules()
-    {
-        return [
-            'slug' => 'required|unique:notification_templates,slug,'.$this->segment(3)
-        ];
-    }
+	public function rules()
+	{
+		return [
+			// 'name' => 'required|min:5|max:255'
+		];
+	}
 
     /**
      * Get the validation attributes that apply to the request.

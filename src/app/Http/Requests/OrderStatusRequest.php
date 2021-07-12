@@ -13,8 +13,8 @@ class OrderStatusRequest extends CrudRequest
      */
     public function authorize()
     {
-        // only allow updates if the user is logged in
-        return \Auth::check();
+		// only allow updates if the user is logged in
+		return backpack_auth()->check();
     }
 
     /**
@@ -22,12 +22,12 @@ class OrderStatusRequest extends CrudRequest
      *
      * @return array
      */
-    public function rules()
-    {
-        return [
-            'name' => 'required'
-        ];
-    }
+	public function rules()
+	{
+		return [
+			// 'name' => 'required|min:5|max:255'
+		];
+	}
 
     /**
      * Get the validation attributes that apply to the request.

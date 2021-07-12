@@ -14,7 +14,7 @@ class AttributeRequest extends CrudRequest
 	public function authorize()
 	{
 		// only allow updates if the user is logged in
-		return \Auth::check();
+		return backpack_auth()->check();
 	}
 
 	/**
@@ -43,7 +43,6 @@ class AttributeRequest extends CrudRequest
 	 */
 	public function attributes()
 	{
-
 		$attributes = [];
 
 		if (isset($this->option)) {

@@ -2,9 +2,9 @@
 
 namespace SmartyStudio\EcommerceCrud\app\Http\Requests;
 
-use App\Http\Requests\Request;
+use Backpack\CRUD\app\Http\Requests\CrudRequest;
 
-class CategoryRequest extends \Backpack\CRUD\app\Http\Requests\CrudRequest
+class CategoryRequest extends CrudRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,8 +13,8 @@ class CategoryRequest extends \Backpack\CRUD\app\Http\Requests\CrudRequest
      */
     public function authorize()
     {
-        // only allow updates if the user is logged in
-        return \Auth::check();
+		// only allow updates if the user is logged in
+		return backpack_auth()->check();
     }
 
     /**

@@ -13,8 +13,8 @@ class UserStoreRequest extends CrudRequest
      */
     public function authorize()
     {
-        // only allow updates if the user is logged in
-        return \Auth::check();
+		// only allow updates if the user is logged in
+		return backpack_auth()->check();
     }
 
     /**
@@ -22,14 +22,13 @@ class UserStoreRequest extends CrudRequest
      *
      * @return array
      */
-    public function rules()
-    {
-        return [
-            'name'     => 'required',
-            'email'    => 'required|unique:'.config('laravel-permission.table_names.users', 'users').',email',
-            'password' => 'required|confirmed',
-        ];
-    }
+	public function rules()
+	{
+		return [
+			'name'     => 'required',
+			'email'    => 'required|unique:' . config('laravel-permission.table_names.users', 'users') . ',email',
+		];
+	}
 
     /**
      * Get the validation attributes that apply to the request.

@@ -13,8 +13,8 @@ class UserUpdateRequest extends CrudRequest
      */
     public function authorize()
     {
-        // only allow updates if the user is logged in
-        return \Auth::check();
+		// only allow updates if the user is logged in
+		return backpack_auth()->check();
     }
 
     /**
@@ -22,14 +22,13 @@ class UserUpdateRequest extends CrudRequest
      *
      * @return array
      */
-    public function rules()
-    {
-        return [
-            'email'    => 'required',
-            'name'     => 'required',
-            'password' => 'confirmed',
-        ];
-    }
+	public function rules()
+	{
+		return [
+			'email'    => 'required',
+			'name'     => 'required',
+		];
+	}
 
     /**
      * Get the validation attributes that apply to the request.
